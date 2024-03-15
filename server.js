@@ -1,13 +1,15 @@
-import express from "express";
-import dotenv from "dotenv";
-import mongoose from "mongoose";
-import bodyParser from "body-parser";
-import admin from "firebase-admin";
-import serviceAccount from "./servicesAccountKey.json" assert { type: "json" };
+const express = require("express");
+const dotenv = require("dotenv");
+const mongoose = require("mongoose");
+const admin = require("firebase-admin");
+const bodyParser = require("body-parser");
+const serviceAccount = require("./servicesAccountKey.json");
 
 const app = express();
+const PORT = 6002;
 
-const PORT = 3000;
+const authRouter = require("./routes/auth");
+
 dotenv.config();
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -21,9 +23,8 @@ mongoose
 app.use(bodyParser.json);
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
+app.use("/", authRouter);
+
 app.listen(process.env.PORT || PORT, () => {
   console.log(`Server Running on http://localhost:${process.env.PORT}`);
 });
