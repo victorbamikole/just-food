@@ -6,7 +6,9 @@ const bodyParser = require("body-parser");
 const serviceAccount = require("./servicesAccountKey.json");
 
 const app = express();
-const PORT = 6002;
+const PORT = 3000;
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const authRouter = require("./routes/auth");
 
@@ -20,11 +22,11 @@ mongoose
   .then(() => console.log("DB connected"))
   .catch((err) => console.log(err));
 
-app.use(bodyParser.json);
-app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/", authRouter);
 
 app.listen(process.env.PORT || PORT, () => {
   console.log(`Server Running on http://localhost:${process.env.PORT}`);
 });
+
+

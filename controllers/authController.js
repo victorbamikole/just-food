@@ -4,8 +4,9 @@ const admin = require("firebase-admin");
 const jwt = require("jsonwebtoken");
 
 module.exports = {
-  createUser: async (res, req) => {
+  createUser: async (req, res) => {
     const user = req.body;
+    console.log("USERNOW", req.body);
     try {
       await admin.auth().getUserByEmail(user.email);
       res.status(400).json({ message: "Email already registered" });
@@ -19,7 +20,7 @@ module.exports = {
             disabled: false,
           });
           const newUser = new User({
-            user: user.userName,
+            userName: user.userName,
             email: user.email,
             password: CryptoJS.AES.encrypt(
               user.password,
@@ -37,23 +38,22 @@ module.exports = {
       }
     }
   },
-  loginUser: async (res, req) => {
+  loginUser: async (req, res) => {
     try {
       const user = await User.findOne(
         { email: req.body.email },
         { __v: 0, updatedAt: 0, createdAt: 0, email: 0 }
       );
-      !user && res.status(401).json;
-      ("Wrong Credentials");
-
+      if (!user) {
+        res.status(401).json("Wrong Credentials");
+      }
       const decryptedPassword = CryptoJS.AES.decrypt(
         user.password,
         process.env.SECERET
       );
       const decrypted = decryptedPassword.toString(CryptoJS.enc.Utf8);
 
-      decrypted != req.body.password && res.status(401).json;
-      ("Wrong Password");
+      decrypted != req.body.password && res.status(401).json("Wrong Password");
 
       const usertoken = jwt.sign(
         {
@@ -72,5 +72,3 @@ module.exports = {
     }
   },
 };
-
-
