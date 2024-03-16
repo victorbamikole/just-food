@@ -3,6 +3,7 @@ const Restaurant = require("../models/Restaurants");
 module.exports = {
   addRestaurant: async (req, res) => {
     const newRestaurant = new Restaurant(req.body);
+    console.log("VERIFIED-USER", newRestaurant);
     try {
       await newRestaurant.save();
       res
@@ -11,7 +12,7 @@ module.exports = {
     } catch (error) {
       res
         .status(500)
-        .json({ status: false, message: "Error creating restaurant" });
+        .json({ status: false, message: "Error creating restaurant",  error: error.message});
     }
   },
 

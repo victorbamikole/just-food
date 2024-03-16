@@ -10,7 +10,7 @@ const restaurantSchema = new mongoose.Schema(
     delivery: { type: Boolean, required: false, default: true },
     owner: { type: String, required: true },
     isAvailable: { type: Boolean, default: true },
-    code: { type: String, required: true }, 
+    code: { type: String, required: true },
     logoUrl: {
       type: String,
       required: true,
@@ -20,11 +20,11 @@ const restaurantSchema = new mongoose.Schema(
     rating: { type: Number, min: 1, max: 5 },
     ratingCount: { type: String },
     coords: {
-      id: { String, required: true },
+      id: { type: String, required: true },
       latitude: { type: Number, required: true },
       longitude: { type: Number, required: true },
-      latitudeDelta: { type: Number, required: true },
-      longitudeDelta: { type: Number, required: true },
+      latitudeDelta: { type: Number, required: true, default: 0.0122 },
+      longitudeDelta: { type: Number, required: true, default: 0.0221 },
       address: { type: String, required: true },
       title: { type: String, required: true },
     },

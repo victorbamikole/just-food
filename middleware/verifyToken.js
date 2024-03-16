@@ -12,7 +12,6 @@ const verifyToken = (req, res, next) => {
           .json({ status: false, message: "Invalid token" });
       }
       req.user = user;
-      console.log("VERIFIED-USER");
       next();
     });
   }
