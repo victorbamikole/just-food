@@ -11,6 +11,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const authRouter = require("./routes/auth");
+const userRouter = require("./routes/user");
+const restaurantRouter = require("./routes/restaurants");
 
 dotenv.config();
 admin.initializeApp({
@@ -22,11 +24,10 @@ mongoose
   .then(() => console.log("DB connected"))
   .catch((err) => console.log(err));
 
-
 app.use("/", authRouter);
+app.use("/api/users", userRouter);
+app.use("/api/restaurant", restaurantRouter);
 
 app.listen(process.env.PORT || PORT, () => {
   console.log(`Server Running on http://localhost:${process.env.PORT}`);
 });
-
-
